@@ -1,1 +1,9 @@
-# Elastic-SIEM-Lab
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 124537" src="https://github.com/user-attachments/assets/945c97f5-165a-4d74-8401-6e9cbf29ab70" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 124330" src="https://github.com/user-attachments/assets/88e79a90-13c0-4653-b2ab-05478c01941b" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 123453" src="https://github.com/user-attachments/assets/7b4ab46f-099a-4fb5-a49c-7a25022d05b1" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 123359" src="https://github.com/user-attachments/assets/48eddb7b-2ee7-474a-8b76-1eba6568b927" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 122726" src="https://github.com/user-attachments/assets/5e4911ee-2037-48cc-8029-d31e573af237" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 122705" src="https://github.com/user-attachments/assets/5bafa32f-b1d8-4d94-990b-eaf97ebf7941" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 122132" src="https://github.com/user-attachments/assets/3d323a8f-db2b-4c3e-9435-5de94214116a" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 121250" src="https://github.com/user-attachments/assets/02a180d1-ca10-4f51-9dc7-b2e1f3312110" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 120023" src="https://github.com/user-attachments/assets/f0277809-44bc-487f-8cc8-de3e056654f2" />
