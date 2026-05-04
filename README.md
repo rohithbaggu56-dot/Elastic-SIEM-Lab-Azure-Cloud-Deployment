@@ -215,16 +215,6 @@ Indicators included brute-force attempts and suspicious activity
 * Real-world SOC investigation workflow
 
 ---
-
-## 🚀 Future Improvements
-
-* Automate IP blocking using response actions
-* Integrate SOAR for incident response
-* Add geolocation-based alerting
-* Build long-term attack trend dashboards
-
----
-
 ## 📎 Conclusion
 
 This project replicates a real SOC workflow:
