@@ -44,68 +44,77 @@ Elastic Security dashboards were used to monitor alerts, system activity, and de
 
 ## ⚙️ Environment Setup
 
-### 1. Azure Infrastructure
+This lab was deployed in Microsoft Azure to simulate a real-world SOC monitoring environment.
 
-* Deployed two virtual machines:
 
-  * Ubuntu Server (Elastic SIEM)
-  * Windows VM (target system)
-* Enabled public internet access to simulate a real-world exposed system
+### Azure Infrastructure
+• Ubuntu VM → Elastic SIEM (Elasticsearch + Kibana)
 
-### 2. SIEM Configuration
+• Windows VM → Publicly exposed target system
 
-* Installed and configured Elastic Stack on Ubuntu
-* Enrolled Elastic Agent for log collection
-* Enabled Security Solution dashboards and detection rules
 
-### 3. Log Collection
+### SIEM Configuration
+• Installed Elastic Stack on Ubuntu server
 
-* Monitored SSH authentication logs
-* Captured:
+• Enrolled Elastic Agent for endpoint telemetry
 
-  * Failed login attempts
-  * Successful logins
-  * Source IP addresses
+• Enabled Security Solution dashboards and detection rules
 
----
+
+### Log Collection
+• Monitored SSH authentication logs (sshd)
+
+Captured:
+
+• Failed login attempts
+
+• Successful logins
+
+• Source IP addresses
+
 
 ## 🌐 Attack Observation
 
-After exposing the Windows VM to the internet:
+Once the Windows VM was exposed to the internet, attack activity began almost immediately.
 
-* Immediate increase in SSH login attempts
-* Multiple IPs attempting authentication
-* Clear pattern of automated attacks
+• Continuous SSH login attempts detected
 
-📷 **Initial Alerts Overview**
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 121250" src="https://github.com/user-attachments/assets/4ae47755-887e-4491-88ca-adb679a7ceeb" />
+• Multiple external IPs targeting the system
+
+• Clear pattern of automated attacks (high-frequency failures)
+
+These events triggered detection rules in Elastic SIEM, generating alerts for further investigation.
 
 ---
 
 ## 🚨 Detection
 
+Elastic SIEM detection rules identified suspicious SSH activity based on repeated authentication failures and abnormal login patterns.
+
 ### 🔹 Password Spraying Detection
 
-* Rule triggered: **Potential Password Spraying Attack via SSH**
-* Behavior observed:
+Rule: Potential Password Spraying Attack via SSH
 
-  * Same IP → multiple usernames
-  * High number of failed attempts in short time
+• Multiple failed login attempts from a single IP
 
-📷 **Password Spraying Alerts**
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 123453" src="https://github.com/user-attachments/assets/f8a296b1-3617-488f-aad1-33218d94b657" />
+• Attempts spread across multiple user accounts
 
----
+• High frequency within a short time window
+
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 123453" src="https://github.com/user-attachments/assets/f44632d6-c785-4e5f-b36b-c0f04902b47d" />
+
 
 ### 🔹 SSH Brute Force Detection
 
-* Rule triggered: **Potential Successful SSH Brute Force Attack**
-* Behavior observed:
+Rule: Potential Successful SSH Brute Force Attack
 
-  * Multiple failures followed by a successful login
+• Multiple failed login attempts observed
 
-📷 **Brute Force Alert Details**
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 122132" src="https://github.com/user-attachments/assets/e94dfd8e-adb8-47af-8b5a-cea302e8be0c" />
+• Followed by a successful authentication event
+
+• Indicates possible credential compromise attempt
+
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 122132" src="https://github.com/user-attachments/assets/eb603a54-10d2-4c4d-91e8-b41afb660d12" />
 
 ---
 
@@ -113,67 +122,52 @@ After exposing the Windows VM to the internet:
 
 ### 🔹 Step 1 – Alert Analysis
 
-* Reviewed alert summary in Elastic SIEM
-* Identified high alert volume from specific IPs
-* Noted repeated authentication failures
+Reviewed alerts in Elastic SIEM to identify suspicious patterns and prioritize investigation.
 
-📷 **Alert Summary Dashboard**
-👉 *(Add: alert count / severity image)*
+Multiple alerts triggered within a short time window
+Repeated SSH authentication failures observed
+High alert volume associated with specific source IPs
 
----
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 121250" src="https://github.com/user-attachments/assets/af0bf645-a1da-49f3-b797-8eece7fbdd47" />
+
 
 ### 🔹 Step 2 – Log Analysis (KQL)
 
-Used KQL query to isolate failed SSH attempts:
+Used KQL to investigate failed SSH authentication attempts:
 
-```kql
 event.outcome: "failure" and process.name: "sshd"
-```
+Confirmed continuous failed login attempts
+Identified automated attack behavior (rapid, repeated attempts)
+Verified activity across multiple usernames
 
-* Observed continuous failed login attempts
-* Confirmed automated attack behavior
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 124330" src="https://github.com/user-attachments/assets/6df8a391-abe2-486e-afaf-f24d43515a07" />
 
-📷 **Log Analysis in Discover**
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 124330" src="https://github.com/user-attachments/assets/5442e460-01c3-4937-b704-89edbc7e2c3d" />
-
----
 
 ### 🔹 Step 3 – Identify Top Attacking IPs
 
-* Aggregated alerts by `source.ip`
-* Identified top attackers:
+Analyzed alerts by source IP to identify primary attackers.
 
-  * High-frequency IP generating thousands of attempts
-  * Multiple additional IPs with lower activity
+One IP responsible for thousands of login attempts
+Additional IPs showed lower but consistent activity
 
-📷 **Top Source IP Visualization**
-
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 123359" src="https://github.com/user-attachments/assets/dde774c8-5510-41bd-acce-57e34172f19f" />
----
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 123359" src="https://github.com/user-attachments/assets/0ece50ff-e94a-43d7-9794-ce8004033837" />
 
 ### 🔹 Step 4 – Threat Intelligence Validation
 
-#### ✅ AbuseIPDB
+Validated suspicious IP addresses using external threat intelligence sources.
 
-* IP reported multiple times for malicious activity
-* **Confidence of abuse: 100%**
-* Indicates known attacker infrastructure
+#### AbuseIPDB
+IP reported multiple times for malicious activity
+Confidence of abuse: 100%
 
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 122705" src="https://github.com/user-attachments/assets/baf09c12-f363-4dd1-a42e-22ce04af9c0b" />
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 122705" src="https://github.com/user-attachments/assets/383f7527-731d-489a-97c4-4acf3fd2e7ad" />
 
----
+#### VirusTotal
+Multiple security vendors flagged the IP as malicious
+Indicators included brute-force attempts and suspicious activity
 
-#### ✅ VirusTotal
+<img width="1920" height="1080" alt="Screenshot 2026-04-24 122726" src="https://github.com/user-attachments/assets/fe62455c-a85d-40cf-aceb-291b4cef8944" />
 
-* Multiple vendors flagged IP as malicious
-* Observed indicators:
-
-  * SSH brute-force attempts
-  * Suspicious activity patterns
-
-<img width="1920" height="1080" alt="Screenshot 2026-04-24 122726" src="https://github.com/user-attachments/assets/a7d0f633-e23b-4628-8a04-79c3367ec374" />
-
----
 
 ## 📊 Key Metrics
 
