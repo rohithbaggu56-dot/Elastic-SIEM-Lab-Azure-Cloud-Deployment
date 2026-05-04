@@ -245,3 +245,7 @@ It demonstrates hands-on experience with:
 * Real-world attack data
 
 ---
+## 📂 Incident Reports
+- [Brute Force Attack – April 24, 2026](incidents/incident_2026-04-24_bruteforce.md)
+- [Password Spraying Attack – April 24, 2026](incidents/incident_2026-04-24_passwordspray.md)
+
