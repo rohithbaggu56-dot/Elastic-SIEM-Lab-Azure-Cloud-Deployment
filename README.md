@@ -4,7 +4,7 @@
 
 This project simulates a real SOC environment using Elastic SIEM deployed on Microsoft Azure.
 
-A publicly exposed Windows VM attracted **live SSH brute-force and password spraying attacks from the internet**. These attacks were collected, detected, and investigated using Elastic SIEM and threat intelligence platforms.
+A publicly exposed Windows VM attracted live SSH brute-force and password spraying attacks from the internet. These attacks were collected, detected, and investigated using Elastic SIEM and threat intelligence platforms.
 
 This is not simulated traffic – all activity observed is from real-world attackers.
 
@@ -48,41 +48,32 @@ This lab was deployed in Microsoft Azure to simulate a real-world SOC monitoring
 
 
 ### Azure Infrastructure
-• Ubuntu VM → Elastic SIEM (Elasticsearch + Kibana)
 
-• Windows VM → Publicly exposed target system
+- Ubuntu VM → Elastic SIEM (Elasticsearch + Kibana)
+- Windows VM → Publicly exposed target system
 
 
 ### SIEM Configuration
-• Installed Elastic Stack on Ubuntu server
-
-• Enrolled Elastic Agent for endpoint telemetry
-
-• Enabled Security Solution dashboards and detection rules
-
+- Installed Elastic Stack on Ubuntu server
+- Enrolled Elastic Agent for endpoint telemetry
+- Enabled Security Solution dashboards and detection rules
 
 ### Log Collection
-• Monitored SSH authentication logs (sshd)
+- Monitored SSH authentication logs (sshd)
 
 Captured:
-
-• Failed login attempts
-
-• Successful logins
-
-• Source IP addresses
-
+- Failed login attempts
+- Successful logins
+- Source IP addresses
 
 ## 🌐 Attack Observation
 
 Once the Windows VM was exposed to the internet, attack activity began almost immediately.
 
-• Continuous SSH login attempts detected
-
-• Multiple external IPs targeting the system
-
-• Clear pattern of automated attacks (high-frequency failures)
-
+- Continuous SSH login attempts detected
+- Multiple external IPs targeting the system
+- Clear pattern of automated attacks (high-frequency failures)
+  
 These events triggered detection rules in Elastic SIEM, generating alerts for further investigation.
 
 ---
@@ -95,11 +86,9 @@ Elastic SIEM detection rules identified suspicious SSH activity based on repeate
 
 Rule: Potential Password Spraying Attack via SSH
 
-• Multiple failed login attempts from a single IP
-
-• Attempts spread across multiple user accounts
-
-• High frequency within a short time window
+- Multiple failed login attempts from a single IP  
+- Attempts across multiple user accounts  
+- High frequency within a short time window  
 
 <img width="1920" height="1080" alt="Screenshot 2026-04-24 123453" src="https://github.com/user-attachments/assets/f44632d6-c785-4e5f-b36b-c0f04902b47d" />
 
@@ -108,11 +97,9 @@ Rule: Potential Password Spraying Attack via SSH
 
 Rule: Potential Successful SSH Brute Force Attack
 
-• Multiple failed login attempts observed
-
-• Followed by a successful authentication event
-
-• Indicates possible credential compromise attempt
+- Multiple failed login attempts observed
+- Followed by a successful authentication event
+- Indicates possible credential compromise attempt
 
 <img width="1920" height="1080" alt="Screenshot 2026-04-24 122132" src="https://github.com/user-attachments/assets/eb603a54-10d2-4c4d-91e8-b41afb660d12" />
 
@@ -124,9 +111,9 @@ Rule: Potential Successful SSH Brute Force Attack
 
 Reviewed alerts in Elastic SIEM to identify suspicious patterns and prioritize investigation.
 
-Multiple alerts triggered within a short time window
-Repeated SSH authentication failures observed
-High alert volume associated with specific source IPs
+- Multiple alerts triggered within a short time window  
+- Repeated SSH authentication failures observed  
+- High alert volume from specific source IPs  
 
 <img width="1920" height="1080" alt="Screenshot 2026-04-24 121250" src="https://github.com/user-attachments/assets/af0bf645-a1da-49f3-b797-8eece7fbdd47" />
 
@@ -135,20 +122,19 @@ High alert volume associated with specific source IPs
 
 Used KQL to investigate failed SSH authentication attempts:
 
-event.outcome: "failure" and process.name: "sshd"
-Confirmed continuous failed login attempts
-Identified automated attack behavior (rapid, repeated attempts)
-Verified activity across multiple usernames
+- event.outcome: "failure" and process.name: "sshd"
+- Confirmed continuous failed login attempts
+- Identified automated attack behavior (rapid, repeated attempts)
+- Verified activity across multiple usernames
 
 <img width="1920" height="1080" alt="Screenshot 2026-04-24 124330" src="https://github.com/user-attachments/assets/6df8a391-abe2-486e-afaf-f24d43515a07" />
-
 
 ### 🔹 Step 3 – Identify Top Attacking IPs
 
 Analyzed alerts by source IP to identify primary attackers.
 
-One IP responsible for thousands of login attempts
-Additional IPs showed lower but consistent activity
+- One IP responsible for thousands of login attempts
+- Additional IPs showed lower but consistent activity
 
 <img width="1920" height="1080" alt="Screenshot 2026-04-24 123359" src="https://github.com/user-attachments/assets/0ece50ff-e94a-43d7-9794-ce8004033837" />
 
@@ -171,24 +157,24 @@ Indicators included brute-force attempts and suspicious activity
 
 ## 📊 Key Metrics
 
-* Total SSH failed login attempts: **~8,900+**
-* Total alerts generated: **52+**
-* Password spraying alerts: **48**
-* High severity brute-force alerts: **1**
-* Unique attacking IPs observed: **4+**
-* Highest attacking IP attempts: **~8,000+**
-* AbuseIPDB confidence: **100% (371 reports)**
-* VirusTotal detections: **8/94 vendors**
+- Total SSH failed login attempts: ~8,900+
+- Total alerts generated: 52+
+- Password spraying alerts: 48
+- High severity brute-force alerts: 1
+- Unique attacking IPs observed: 4+
+- Highest attacking IP attempts: ~8,000+
+- AbuseIPDB confidence: 100% (371 reports)
+- VirusTotal detections: 8/94 vendors
 
 ---
 
 ## 📌 Key Findings
 
-* Publicly exposed systems are quickly targeted by automated attacks
-* Password spraying is commonly used before brute-force success
-* One IP showed strong malicious reputation across multiple platforms
-* Successful authentication after failures indicates potential compromise attempt
-* Attack traffic originated from multiple geographic locations
+- Publicly exposed systems are quickly targeted by automated attacks  
+- Password spraying is commonly used before brute-force success  
+- One IP showed strong malicious reputation across multiple platforms  
+- Successful authentication after failures indicates potential compromise attempt  
+- Attack traffic originated from multiple geographic locations  
 
 ---
 
