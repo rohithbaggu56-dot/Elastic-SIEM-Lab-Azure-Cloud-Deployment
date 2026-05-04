@@ -70,7 +70,7 @@ Captured:
 
 Once the Windows VM was exposed to the internet, attack activity began almost immediately.
 
-- Continuous SSH login attempts detected
+- Observed a high volume of repeated SSH login attempts within a short time window, indicating automated attack behavior
 - Multiple external IPs targeting the system
 - Clear pattern of automated attacks (high-frequency failures)
   
@@ -88,7 +88,9 @@ Rule: Potential Password Spraying Attack via SSH
 
 - Multiple failed login attempts from a single IP  
 - Attempts across multiple user accounts  
-- High frequency within a short time window  
+- High frequency within a short time window
+
+These detections were triggered automatically based on Elastic prebuilt rules for SSH attack patterns.
 
 <img width="1920" height="1080" alt="Screenshot 2026-04-24 123453" src="https://github.com/user-attachments/assets/f44632d6-c785-4e5f-b36b-c0f04902b47d" />
 
@@ -106,6 +108,7 @@ Rule: Potential Successful SSH Brute Force Attack
 ---
 
 ## 🔍 Investigation Process
+
 
 ### 🔹 Step 1 – Alert Analysis
 
@@ -174,8 +177,34 @@ Indicators included brute-force attempts and suspicious activity
 - Password spraying is commonly used before brute-force success  
 - One IP showed strong malicious reputation across multiple platforms  
 - Successful authentication after failures indicates potential compromise attempt  
-- Attack traffic originated from multiple geographic locations  
+- Attack traffic originated from multiple geographic locations
+  
+---
 
+## 🛡️ Recommendations & Mitigation
+
+Based on the observed SSH brute-force and password spraying activity, the following actions are recommended:
+
+### 🔹 Immediate Actions
+- Block identified malicious IP addresses at firewall / NSG level  
+- Disable password-based SSH authentication  
+- Enforce SSH key-based authentication  
+
+### 🔹 Hardening Measures
+- Change default SSH port to reduce automated scanning noise  
+- Implement account lockout policies after multiple failed attempts  
+- Restrict SSH access to trusted IP ranges only  
+
+### 🔹 Monitoring Improvements
+- Enable alerting for repeated failed login attempts  
+- Create dashboards to track attack trends over time  
+- Integrate SIEM alerts with automated response (SOAR)  
+
+### 🔹 Long-Term Security Enhancements
+- Enable Multi-Factor Authentication (MFA) where applicable  
+- Regularly review authentication logs for anomalies  
+- Conduct periodic security assessments of exposed systems
+  
 ---
 
 ## 🛡️ MITRE ATT&CK Mapping
@@ -201,6 +230,7 @@ Indicators included brute-force attempts and suspicious activity
 * Real-world SOC investigation workflow
 
 ---
+
 ## 📎 Conclusion
 
 This project replicates a real SOC workflow:
