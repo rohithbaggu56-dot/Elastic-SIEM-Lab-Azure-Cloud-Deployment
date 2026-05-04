@@ -183,7 +183,8 @@ Indicators included brute-force attempts and suspicious activity
 
 ## 🛡️ Recommendations & Mitigation
 
-Based on the observed SSH brute-force and password spraying activity, the following actions are recommended:
+Following the investigation, actionable steps were identified to reduce risk and prevent similar attacks in the future. 
+→ Based on the observed SSH brute-force and password spraying activity, the following actions are recommended:
 
 ### 🔹 Immediate Actions
 - Block identified malicious IP addresses at firewall / NSG level  
